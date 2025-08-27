@@ -3,782 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mot Mot Oyamat 👽 | Space Bio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600&family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --space-black: #000000;
-            --space-dark: #0a0a0a;
-            --space-blue: #0a0a1a;
-            --neon-green: #00ff9d;
-            --neon-blue: #00d9ff;
-            --neon-purple: #b967ff;
-            --text-light: #ffffff;
-            --text-dim: #a0a0b0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: var(--space-black);
-            color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden;
-            font-family: 'Exo 2', sans-serif;
-            line-height: 1.6;
-        }
-
-        /* Loading Screen */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--space-black);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease-out;
-        }
-
-        .loading-content {
-            text-align: center;
-            width: 80%;
-            max-width: 500px;
-        }
-
-        .loading-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: var(--neon-green);
-            letter-spacing: 3px;
-        }
-
-        .loading-bar {
-            width: 100%;
-            height: 20px;
-            background: #111;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            border: 1px solid var(--neon-green);
-        }
-
-        .loading-progress {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
-            transition: width 0.3s ease;
-        }
-
-        .loading-percentage {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: var(--neon-blue);
-            margin-bottom: 30px;
-        }
-
-        .loading-weeds {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .loading-weeds i {
-            color: #4CAF50;
-            font-size: 1.5rem;
-            animation: weedPulse 2s infinite;
-        }
-
-        @keyframes weedPulse {
-            0%, 100% { opacity: 0.3; transform: translateY(0); }
-            50% { opacity: 1; transform: translateY(-5px); }
-        }
-
-        /* Modern scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--space-dark);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--neon-green);
-            border-radius: 4px;
-        }
-
-        /* Stars background */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -3;
-            pointer-events: none;
-        }
-
-        .star {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 50%;
-            animation: twinkle linear infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
-        }
-
-        /* Moon with Philippine flag */
-        .moon {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #e6e6e6, #f5f5f5, #d9d9d9);
-            box-shadow: 0 0 80px rgba(255, 255, 255, 0.6);
-            z-index: -2;
-        }
-
-        .moon-crater {
-            position: absolute;
-            border-radius: 50%;
-            background: #b3b3b3;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .moon-crater-1 {
-            width: 60px;
-            height: 60px;
-            top: 50px;
-            left: 70px;
-        }
-
-        .moon-crater-2 {
-            width: 40px;
-            height: 40px;
-            top: 120px;
-            right: 60px;
-        }
-
-        .moon-crater-3 {
-            width: 35px;
-            height: 35px;
-            bottom: 80px;
-            left: 90px;
-        }
-
-        .moon-flag {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 4rem;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
-        }
-
-        /* Floating weed leaves */
-        .weed-leaf {
-            position: absolute;
-            color: #4CAF50;
-            opacity: 0;
-            z-index: -1;
-            animation: float linear infinite;
-            text-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
-            font-size: 2rem;
-            pointer-events: none;
-        }
-
-        @keyframes float {
-            0% { 
-                transform: translateY(100vh) rotate(0deg) scale(0.8);
-                opacity: 0;
-            }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { 
-                transform: translateY(-100px) rotate(360deg) scale(1.2);
-                opacity: 0;
-            }
-        }
-
-        /* Alien creatures */
-        .alien {
-            position: fixed;
-            font-size: 2.5rem;
-            animation: floatAlien 6s ease-in-out infinite;
-            z-index: -1;
-            filter: drop-shadow(0 0 10px var(--neon-green));
-        }
-
-        .alien-1 {
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .alien-2 {
-            top: 70%;
-            right: 15%;
-            animation-delay: 2s;
-        }
-
-        .alien-3 {
-            top: 40%;
-            right: 5%;
-            animation-delay: 4s;
-        }
-
-        @keyframes floatAlien {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-20px) rotate(5deg); }
-            50% { transform: translateY(0) rotate(0deg); }
-            75% { transform: translateY(20px) rotate(-5deg); }
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        header {
-            text-align: center;
-            padding: 60px 0 40px;
-            position: relative;
-        }
-
-        .profile-img-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 30px;
-        }
-
-        .profile-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid transparent;
-            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue), var(--neon-purple)) border-box;
-            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            box-shadow: 0 0 25px rgba(0, 255, 157, 0.5);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
-
-        .profile-img:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 0 35px rgba(0, 255, 157, 0.8);
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 2px;
-            transition: all 0.4s ease;
-        }
-
-        h1:hover {
-            letter-spacing: 4px;
-            text-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
-        }
-
-        .tagline {
-            font-size: 1.6rem;
-            color: var(--neon-blue);
-            margin-bottom: 25px;
-            font-weight: 300;
-            transition: all 0.4s ease;
-        }
-
-        .tagline:hover {
-            color: var(--neon-green);
-            text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin: 30px 0;
-        }
-
-        .social-links a {
-            color: var(--text-dim);
-            font-size: 2.8rem;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-
-        .social-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: var(--neon-green);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .social-links a:hover {
-            color: var(--neon-green);
-            transform: translateY(-8px) scale(1.2);
-        }
-
-        .social-links a:hover::after {
-            width: 100%;
-        }
-
-        .bio-section {
-            background: rgba(5, 5, 16, 0.6);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s ease;
-            transform: translateY(0);
-        }
-
-        .bio-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(0, 255, 157, 0.2);
-        }
-
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--neon-green);
-            margin-bottom: 25px;
-            font-size: 2.2rem;
-            position: relative;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        h2:hover {
-            letter-spacing: 2px;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
-            transition: all 0.4s ease;
-        }
-
-        h2:hover::after {
-            width: 100%;
-        }
-
-        p {
-            line-height: 1.7;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            transition: all 0.3s ease;
-        }
-
-        p:hover {
-            color: var(--text-light);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            margin-top: 60px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-text {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-text:hover {
-            color: var(--neon-blue);
-        }
-
-        .alien-emoji {
-            font-size: 2.2rem;
-            margin: 0 5px;
-            animation: floatAlien 4s ease-in-out infinite;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .alien-emoji:hover {
-            transform: scale(1.3) rotate(20deg);
-        }
-
-        /* Particle effects */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            background: var(--neon-green);
-            border-radius: 50%;
-            opacity: 0;
-            animation: particleFloat linear infinite;
-        }
-
-        @keyframes particleFloat {
-            0% { 
-                transform: translateY(0) translateX(0) scale(0);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { 
-                transform: translateY(-100px) translateX(20px) scale(1);
-                opacity: 0;
-            }
-        }
-
-        /* Responsive design */
-        @media (max-width: 968px) {
-            h1 {
-                font-size: 2.8rem;
-            }
-            
-            .tagline {
-                font-size: 1.4rem;
-            }
-            
-            .profile-img {
-                width: 180px;
-                height: 180px;
-            }
-            
-            .moon {
-                width: 200px;
-                height: 200px;
-            }
-            
-            .bio-section {
-                padding: 30px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.3rem;
-            }
-            
-            .tagline {
-                font-size: 1.2rem;
-            }
-            
-            .profile-img {
-                width: 160px;
-                height: 160px;
-            }
-            
-            .moon {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .social-links a {
-                font-size: 2.2rem;
-            }
-            
-            .bio-section {
-                padding: 25px 20px;
-            }
-            
-            h2 {
-                font-size: 1.8rem;
-            }
-            
-            p {
-                font-size: 1.1rem;
-            }
-            
-            .alien {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .profile-img {
-                width: 140px;
-                height: 140px;
-            }
-            
-            .moon {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .social-links a {
-                font-size: 2rem;
-            }
-            
-            .alien {
-                display: none;
-            }
-        }
-    </style>
+    <title>Mot Mot Oyamat 👽 - Space Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loading-content">
-            <div class="loading-text">LOADING COSMIC ENERGY</div>
-            <div class="loading-bar">
-                <div class="loading-progress" id="loading-progress"></div>
+    <!-- Animated Background Elements -->
+    <div class="space-background">
+        <div class="stars"></div>
+        <div class="moving-stars"></div>
+        <div class="nebula"></div>
+    </div>
+
+    <!-- Floating Celestial Objects -->
+    <div class="celestial-objects">
+        <div class="earth floating-object" data-speed="0.5"></div>
+        <div class="moon floating-object" data-speed="0.8"></div>
+        <div class="asteroid floating-object" data-speed="1.2"></div>
+    </div>
+
+    <!-- Animated Spaceships -->
+    <div class="spaceship spaceship-1">
+        <div class="ship-body"></div>
+        <div class="ship-trail"></div>
+    </div>
+    <div class="spaceship spaceship-2">
+        <div class="ship-body"></div>
+        <div class="ship-trail"></div>
+    </div>
+    <div class="spaceship spaceship-3">
+        <div class="ship-body"></div>
+        <div class="ship-trail"></div>
+    </div>
+
+    <!-- Particle Systems -->
+    <div class="particle-container" id="particles"></div>
+    <div class="weed-particles" id="weedParticles"></div>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+        <!-- Facebook-style Header -->
+        <header class="space-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <span>Space Portfolio</span>
+                </div>
+                
             </div>
-            <div class="loading-percentage" id="loading-percentage">⁰⁰%</div>
-            <div class="loading-weeds">
-                <i class="fas fa-cannabis"></i>
-                <i class="fas fa-cannabis"></i>
-                <i class="fas fa-cannabis"></i>
-                <i class="fas fa-cannabis"></i>
-                <i class="fas fa-cannabis"></i>
+        </header>
+
+        <!-- Profile Section -->
+        <section class="profile-section" id="home">
+            <div class="profile-container">
+                <!-- Profile Cover with Space Theme -->
+                <div class="profile-cover">
+                    <div class="cover-overlay"></div>
+                    <div class="weed-icons">
+                        <i class="fas fa-cannabis weed-icon"></i>
+                        <i class="fas fa-cannabis weed-icon"></i>
+                        <i class="fas fa-cannabis weed-icon"></i>
+                        <i class="fas fa-cannabis weed-icon"></i>
+                        <i class="fas fa-cannabis weed-icon"></i>
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="profile-info">
+                    <div class="profile-picture-container">
+                        <div class="profile-picture">
+                            <div class="alien-avatar" id="alienAvatar">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVESsOGmdWhPJ3B2TA_ES2nct9DpVhb1sVrQ&s" alt="Mot Mot Oyamat Profile" class="profile-img">
+                                <div class="alien-glow"></div>
+                            </div>
+                        </div>
+                        <div class="status-indicator online"></div>
+                    </div>
+
+                    <div class="profile-details">
+                        <h1 class="profile-name">
+                            Mot Mot Oyamat 👽
+                            <div class="name-glow"></div>
+                        </h1>
+                        <p class="profile-tagline">
+                            Intergalactic Explorer • Space Wanderer • Cosmic Dreamer
+                        </p>
+
+                        <!-- Interactive Alien Characters -->
+                        <div class="alien-friends">
+                            <div class="alien-character alien-1" data-alien="1">
+                                <div class="alien-body">👽</div>
+                                <div class="alien-effects"></div>
+                            </div>
+                            <div class="alien-character alien-2" data-alien="2">
+                                <div class="alien-body">🛸</div>
+                                <div class="alien-effects"></div>
+                            </div>
+                            <div class="alien-character alien-3" data-alien="3">
+                                <div class="alien-body">🌌</div>
+                                <div class="alien-effects"></div>
+                            </div>
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="social-links">
+                            <a href="#" class="social-link instagram-link" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                                <div class="link-glow"></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section" id="about">
+            <div class="section-container">
+                <h2 class="section-title">
+                    <i class="fas fa-user-astronaut"></i>
+                    About the Cosmic Journey
+                </h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Welcome to my intergalactic portfolio! I'm Mot Mot Oyamat, a cosmic explorer navigating through the vast universe of creativity and imagination.</p>
+                        <p>From distant galaxies to earthly gardens, I blend the mysteries of space with the natural wonders of our planet. My journey spans across dimensions, collecting experiences and sharing them with fellow space travelers.</p>
+                    </div>
+                    <div class="cosmic-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">Light Years Traveled</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">420</div>
+                            <div class="stat-label">Galaxies Explored</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2024</div>
+                            <div class="stat-label">Earth Years Active</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cosmetic Vibration Effect -->
+                <div class="cosmetic-vibration">
+                    <div class="vibration-line"></div>
+                    <div class="vibration-line"></div>
+                    <div class="vibration-line"></div>
+                    <div class="vibration-line"></div>
+                    <div class="vibration-line"></div>
+                </div>
+                
+                <!-- Floating Weed Leaves -->
+                <div class="floating-weed-leaves">
+                    <i class="fas fa-cannabis weed-leaf"></i>
+                    <i class="fas fa-cannabis weed-leaf"></i>
+                    <i class="fas fa-cannabis weed-leaf"></i>
+                    <i class="fas fa-cannabis weed-leaf"></i>
+                    <i class="fas fa-cannabis weed-leaf"></i>
+                    <i class="fas fa-cannabis weed-leaf"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section" id="gallery">
+            <div class="section-container">
+                <h2 class="section-title">
+                    <i class="fas fa-images"></i>
+                    Cosmic Gallery
+                </h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background-image: url('https://pixabay.com/get/g7690019a47e976c401efa6cdc4666cf048f4f133b8df596b067ba93439e66c7899458d36e2107d0a70d810da4eb886ca9ee76a66122ad68d9eed6988ecde6d26_1280.jpg')"></div>
+                        <div class="gallery-overlay">
+                            <h3>Nebula Dreams</h3>
+                            <p>Cosmic clouds of stardust</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background-image: url('https://pixabay.com/get/g4b655113cace2bac795562977fd60026484c5f7fa09856165f439487d05486cb4bacb97dc67c4a151a4e50121e7c998040d6a7e250d53ceab1c32c4b1b6d0b31_1280.jpg')"></div>
+                        <div class="gallery-overlay">
+                            <h3>Alien Encounters</h3>
+                            <p>Meeting fellow cosmic beings</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background-image: url('https://pixabay.com/get/g77cbc2d3cf3b9f76138a9807ce8a0c81716d382d036116be2284628d977a8b7b7a44d8edabba92e5de18b8e1c1ccd78d_1280.jpg')"></div>
+                        <div class="gallery-overlay">
+                            <h3>Spaceship Fleet</h3>
+                            <p>Vehicles for cosmic exploration</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background-image: url('https://pixabay.com/get/g0a485a65ecf651002480a2c57e75a1a04e03fa5bfdd37ec16f977b7d45de5066976c2482b99e60dba2b6ac08a23de3b5_1280.jpg')"></div>
+                        <div class="gallery-overlay">
+                            <h3>Lunar Surface</h3>
+                            <p>Exploring celestial bodies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section" id="contact">
+            <div class="section-container">
+                <h2 class="section-title">
+                    <i class="fas fa-satellite-dish"></i>
+                    Cosmic Communication
+                </h2>
+                <div class="contact-content">
+                    <p>Ready to embark on an intergalactic journey together? Send your cosmic signals through the void!</p>
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <i class="fas fa-rocket"></i>
+                            <span>Telepathic Waves: Always Active</span>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-satellite"></i>
+                            <span>Quantum Communications: 24/7</span>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fab fa-instagram"></i>
+                            <span>Instagram: @motmotoyamat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="cosmic-footer">
+        <div class="footer-content">
+            <p class="footer-text">Made with 👽 by <strong>Mot Mot Oyamat</strong></p>
+            <p class="footer-tagline">(in this planet beyond)</p>
+            <div class="footer-alien-effects">
+                <span class="footer-alien">👽</span>
+                <span class="footer-alien">🛸</span>
+                <span class="footer-alien">🌌</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Click Effect Elements -->
+    <div class="click-effects" id="clickEffects"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-alien">👽</div>
+            <div class="loading-text">Initializing Cosmic Connection...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
             </div>
         </div>
     </div>
 
-    <div class="stars" id="stars"></div>
-    <div class="particles" id="particles"></div>
-    <div class="weed-leaves-container" id="weedLeaves"></div>
-    <div class="moon">
-        <div class="moon-crater moon-crater-1"></div>
-        <div class="moon-crater moon-crater-2"></div>
-        <div class="moon-crater moon-crater-3"></div>
-        <div class="moon-flag">🇵🇭</div>
-    </div>
-    <div class="alien alien-1">👽</div>
-    <div class="alien alien-2">👾</div>
-    <div class="alien alien-3">🛸</div>
-    
-    <div class="container" id="main-content">
-        <header>
-            <div class="profile-img-container">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVESsOGmdWhPJ3B2TA_ES2nct9DpVhb1sVrQ&s" alt="Mot Mot Oyamat" class="profile-img">
-            </div>
-            <h1>Mot Mot Oyamat <span class="alien-emoji">👽</span></h1>
-            <p class="tagline">Cosmic Explorer • Space Traveler</p>
-            
-            <div class="social-links">
-                <a href="https://www.instagram.com/oyamatmots?igsh=YW42cHhveXNnaWx2" target="_blank"><i class="fab fa-instagram"></i></a>
-            </div>
-        </header>
-        
-        <section class="bio-section">
-            <h2>Cosmic Vibration</h2>
-            <p>Traveling through dimensions and exploring the universe's mysteries. From the depths of space to digital realms, I'm on a perpetual journey of discovery.</p>
-            <p>Exploring the cosmos and beyond, one galaxy at a time. The universe is vast and full of wonders waiting to be discovered.</p>
-        </section>
-        
-        <footer>
-            <p class="footer-text">Made with <span class="alien-emoji">👽</span> by Mot Mot Oyamat</p>
-            <p class="footer-text">&copy; 2025 - All rights reserved (on this planet and beyond)</p>
-        </footer>
-    </div>
-
-    <audio id="spaceSound" loop>
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-space-ambience-1683.mp3" type="audio/mpeg">
-    </audio>
-
-    <script>
-        // Loading screen functionality
-        const loadingScreen = document.getElementById('loading-screen');
-        const loadingProgress = document.getElementById('loading-progress');
-        const loadingPercentage = document.getElementById('loading-percentage');
-        const mainContent = document.getElementById('main-content');
-        const spaceSound = document.getElementById('spaceSound');
-        
-        // Superscript number mapping
-        const superscriptNumbers = {
-            '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', 
-            '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '%': '%'
-        };
-        
-        function toSuperscript(text) {
-            return text.split('').map(char => superscriptNumbers[char] || char).join('');
-        }
-        
-        // Simulate loading
-        let progress = 0;
-        const loadingInterval = setInterval(() => {
-            progress += Math.random() * 5;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(loadingInterval);
-                
-                // Finish loading
-                setTimeout(() => {
-                    loadingScreen.style.opacity = '0';
-                    setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                        mainContent.style.opacity = '1';
-                        
-                        // Play space sound
-                        spaceSound.play().catch(e => {
-                            console.log("Audio play failed:", e);
-                        });
-                    }, 500);
-                }, 500);
-            }
-            
-            // Update progress
-            loadingProgress.style.width = `${progress}%`;
-            loadingPercentage.textContent = toSuperscript(Math.round(progress) + '%');
-        }, 100);
-        
-        // Create stars background
-        function createStars() {
-            const stars = document.getElementById('stars');
-            const starsCount = 300;
-            
-            for (let i = 0; i < starsCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                const size = Math.random() * 3;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.left = `${Math.random() * 100}%`;
-                
-                star.style.animationDuration = `${Math.random() * 4 + 2}s`;
-                star.style.animationDelay = `${Math.random() * 3}s`;
-                
-                stars.appendChild(star);
-            }
-        }
-        
-        // Create floating weed leaves
-        function createWeedLeaves() {
-            const container = document.getElementById('weedLeaves');
-            const leafCount = 25;
-            const leafHTML = '<i class="fas fa-cannabis"></i>';
-            
-            for (let i = 0; i < leafCount; i++) {
-                const leaf = document.createElement('div');
-                leaf.classList.add('weed-leaf');
-                leaf.innerHTML = leafHTML;
-                
-                leaf.style.left = `${Math.random() * 100}%`;
-                leaf.style.animationDuration = `${Math.random() * 15 + 10}s`;
-                leaf.style.animationDelay = `${Math.random() * 5}s`;
-                leaf.style.fontSize = `${Math.random() * 1.5 + 1.5}rem`;
-                
-                container.appendChild(leaf);
-            }
-        }
-        
-        // Create particles
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 4 + 1;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100 + 100}%`;
-                
-                // Random color from neon palette
-                const colors = ['#00ff9d', '#00d9ff', '#b967ff'];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                particle.style.animationDuration = `${Math.random() * 5 + 3}s`;
-                particle.style.animationDelay = `${Math.random() * 5}s`;
-                
-                container.appendChild(particle);
-            }
-        }
-        
-        // Add interactive effects to bio section
-        document.querySelector('.bio-section').addEventListener('mousemove', function(e) {
-            const particles = document.getElementById('particles');
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            
-            const size = Math.random() * 3 + 1;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            
-            const rect = this.getBoundingClientRect();
-            particle.style.left = `${e.clientX - rect.left}px`;
-            particle.style.top = `${e.clientY - rect.top}px`;
-            
-            // Random color from neon palette
-            const colors = ['#00ff9d', '#00d9ff', '#b967ff'];
-            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-            
-            particle.style.animationDuration = `${Math.random() * 3 + 2}s`;
-            
-            particles.appendChild(particle);
-            
-            // Remove particle after animation completes
-            setTimeout(() => {
-                particle.remove();
-            }, 3000);
-        });
-        
-        // Initialize when page loads
-        window.addEventListener('load', function() {
-            createStars();
-            createWeedLeaves();
-            createParticles();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
-    </html>
+</html>
